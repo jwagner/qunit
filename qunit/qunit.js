@@ -298,8 +298,19 @@ var QUnit = {
 
 	start: function() {
 		// A slight delay, to avoid any current callbacks
-        config.blocking = false;
-        process();
+		if ( window.setTimeout ) {
+			window.setTimeout(function() {
+				if ( config.timeout ) {
+					clearTimeout(config.timeout);
+				}
+
+				config.blocking = false;
+				process();
+			}, 13);
+		} else {
+			config.blocking = false;
+			process();
+		}
 	},
 	
 	stop: function(timeout) {
